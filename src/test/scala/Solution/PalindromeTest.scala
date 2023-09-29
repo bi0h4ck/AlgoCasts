@@ -1,4 +1,4 @@
-package SolutionList
+package Solution
 import org.scalatest.funsuite.AnyFunSuite
 
 class PalindromeTest extends AnyFunSuite {
