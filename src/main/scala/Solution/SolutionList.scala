@@ -1,5 +1,6 @@
 package Solution
 
+import scala.annotation.tailrec
 import scala.collection.mutable.HashMap
 
 object SolutionList {
@@ -74,5 +75,78 @@ object SolutionList {
   def maxChar(s: String): String =
     s.foldRight(HashMap[Char, Int]())((char, map) => map += (char -> (map.getOrElse(char, 0) + 1))).maxBy(_._2)._1.toString
 
+  /*
+  Write a program that console logs the numbers from 1 to n.
+
+  For multiples of three print 'fizz' instead of the number
+
+  For the multiples of five print 'buzz'
+
+  For numbers which are multiples of both three and five print 'fizzbuzz'
+  */
+
+  def fizzbuzz(n: Int): Unit = {
+    def dividedBy3(num: Int): Boolean = num % 3 == 0
+    def dividedBy5(num: Int): Boolean = num % 5 == 0
+
+    for (i <- 1 to n ) {
+      (dividedBy3(i), dividedBy5(i)) match {
+        case (true, false) => println("fizz")
+        case (true, true) => println("fizzbuzz")
+        case (false, true) => println("buzz")
+        case _ => println(i)
+      }
+    }
+  }
+
+  /*
+  Given an array and chunk size, divide the array into many subarrays where each subarray is of the provided size.
+
+  Examples:
+
+   // Chunk size two:
+   chunk([1, 2, 3, 4], 2) --> [[ 1, 2], [3, 4]]
+
+   // Chunk size two:
+   chunk([1, 2, 3, 4, 5], 2) --> [[ 1, 2], [3, 4], [5]]
+
+   // Chunk size 3:
+   chunk([1, 2, 3, 4, 5, 6, 7, 8], 3) --> [[ 1, 2, 3], [4, 5, 6], [7, 8]]
+
+   // Chunk size 4:
+   chunk([1, 2, 3, 4, 5], 4) --> [[ 1, 2, 3, 4], [5]]
+
+   // Chunk size 10:
+   chunk([1, 2, 3, 4, 5], 10) --> [[ 1, 2, 3, 4, 5]]
+  */
+  //take the first n element and return them in an array
+
+
+  def chunk(array: Array[Int], size: Int): Array[Array[Int]] = {
+    @tailrec
+    def chunkHelper(result: List[Array[Int]], current: Array[Int]): List[Array[Int]] = {
+      if (current.isEmpty) result
+      else {
+        val (chunk, remaining) = current.splitAt(size)
+        chunkHelper(result :+ chunk, remaining)
+      }
+    }
+
+    chunkHelper(List[Array[Int]](), array).toArray
+  }
+
+  /* Alternative solution
+  def chunk(array: Array[Int], size: Int): Array[Array[Int]] = {
+    val arrayLength = array.length
+    val numOfChunk = {
+      if(arrayLength % size != 0) arrayLength/size + 1
+      else arrayLength/size
+    }
+    val result = new Array[Array[Int]](numOfChunk)
+    for(i <- 0 until numOfChunk) {
+      result(i) = array.slice(i * size, i * size + size)
+    }
+    result
+  }*/
 
 }
