@@ -14,6 +14,7 @@ object SolutionList {
   reverse('hello') === 'olleh'
   reverse('Greetings!') === '!sgniteerG'
    */
+  //Iterate each character of the string starting from the right, form a new string
   def reverse(s: String): String = s.foldRight("")((c, result) => result :+ c)
   /*
   def reverse(s: String): String = s.split("").reduceRight((c, result) => result + c).toString
@@ -29,6 +30,7 @@ object SolutionList {
    palindrome("abba") === true
    palindrome("abcdefg") === false
     */
+  //compare each character of the string from left to from right
   def palindrome(s: String): Boolean = {
     val size = s.length
     for( i <- 0 until size/2 ) {
@@ -49,13 +51,18 @@ object SolutionList {
   reverseInt(-15) === -51;
   reverseInt(-90) === -9;
    */
+
+
+  //take out the right digit in 'current' and add it to 'result'
+  //use %10 to get the digit from the right
+  //use *10 to move the accumulation to the left
   def reverseIntHelper(result: Int, current: Int): Int = {
     if(current == 0) return result
     reverseIntHelper(result*10 + current%10, current/10)
   }
   def reverseInt(n: Int): Int = reverseIntHelper(0, n)
 
-/*  Alternative solution
+/*  Alternative solution: convert Int to String, form a new string by adding each char from right, if it's a '-', add to the front of the result
   def reverseInt(n: Int): Int = {
     n.toString.foldRight("")((c, result) => {
       if (c == '-') c +: result
@@ -72,6 +79,8 @@ object SolutionList {
    maxChar("abcccccccd") === "c"
    maxChar("apple 1231111") === "1"
    */
+  //store each char with its frequency in a HashMap
+  //get the key that has the max value in the map
   def maxChar(s: String): String =
     s.foldRight(HashMap[Char, Int]())((char, map) => map += (char -> (map.getOrElse(char, 0) + 1))).maxBy(_._2)._1.toString
 
@@ -121,7 +130,10 @@ object SolutionList {
   */
   //take the first n element and return them in an array
 
-
+  //split the array with the given size,
+  //add the chunk to the accumulated result,
+  //pass the remaining to chunkHelper
+  //until the remaining is empty, return the result
   def chunk(array: Array[Int], size: Int): Array[Array[Int]] = {
     @tailrec
     def chunkHelper(result: List[Array[Int]], current: Array[Int]): List[Array[Int]] = {
@@ -135,7 +147,7 @@ object SolutionList {
     chunkHelper(List[Array[Int]](), array).toArray
   }
 
-  /* Alternative solution
+  /* Alternative solution: find a number of chunk, add the chunk sliced from the array to the result
   def chunk(array: Array[Int], size: Int): Array[Array[Int]] = {
     val arrayLength = array.length
     val numOfChunk = {
@@ -148,5 +160,75 @@ object SolutionList {
     }
     result
   }*/
+
+  /*
+  Check to see if two provided strings are anagrams of each other. One string is an anagram of another if it uses the same characters in the same quantity.
+
+  Only consider characters, not spaces or punctuation
+
+  Consider capital letters to be the same as lower case
+
+  Examples:
+
+  anagrams('rail safety', 'fairy tales') === true
+  anagrams('RAIL! SAFETY!', 'fairy tales') === true
+  anagrams('Hi there', 'Bye there') === false
+  */
+
+  //strip the string any non word and space and then lowercase
+  //create a map of char and its frequency from the cleaned string
+  //compare 2 maps
+  def anagrams(s1: String, s2: String): Boolean = {
+    def cleanAndCount(s: String): Map[Char, Int] = {
+      val cleaned = s.replaceAll("[\\W\\s]+", "").toLowerCase
+      cleaned.foldRight(Map[Char, Int]().withDefaultValue(0))((char, acc) => acc + (char -> (acc(char) + 1)))
+    }
+
+    val charCount1 = cleanAndCount(s1)
+    val charCount2 = cleanAndCount(s2)
+    charCount1.equals(charCount2)
+  }
+
+    /* Organize the code in a different way
+    def anagrams(s1: String, s2: String): Boolean = {
+      def toMapOfCharInt(s: String): HashMap[Char, Int] =
+        s.foldRight(HashMap[Char, Int]())((char, acc) => acc += (char -> (acc.getOrElse(char, 0) + 1)))
+
+      def treatString(s: String): String = s.replaceAll("[\\W\\s]+", "").toLowerCase
+
+      val treatedString1 = treatString(s1)
+      val treatedString2 = treatString(s2)
+      if(treatedString1.length == treatedString2.length) {
+        val map1 = toMapOfCharInt(treatedString1)
+        val map2 = toMapOfCharInt(treatedString2)
+        map1.equals(map2)
+      } else false
+    }
+    */
+
+  /*
+  Write a function that accepts a string. The function should capitalize the first letter of each word in the string and return the result.
+
+  Examples:
+
+  capitalize('a short sentence') --> 'A Short Sentence'
+  capitalize('a lazy fox') --> 'A Lazy Fox'
+  capitalize('look, it is working!') --> 'Look, It Is Working!'
+  */
+  //use regex
+  def capitalize(input: String): String = {
+    val pattern = "\\b\\w".r
+    pattern.replaceAllIn(input, _.group(0).toUpperCase)
+  }
+
+  /* Alternative solution: take out words, put them in an array, convert first char of each word to uppercase then join them back with a space
+  def capitalize(input: String): String = {
+    input.split(" ").foldLeft("")((acc, word) => {
+      val (firstChar, rest) = word.splitAt(1)
+      acc + (firstChar.toUpperCase + rest + " ")
+    }).stripTrailing
+  }
+  */
+
 
 }
