@@ -230,5 +230,62 @@ object SolutionList {
   }
   */
 
+  /*
+  Write a function that accepts a positive number N. The function should console log a step shape with N levels using the # character.
+  Make sure the step has spaces on the right hand side!
 
+  Examples
+
+  steps(2);
+  //    '# '
+  //    '##'
+
+  steps(3)
+  //    '#  '
+  //    '## '
+  //    '###'
+
+  steps(4)
+  //    '#   '
+  //    '##  '
+  //    '### '
+  //    '####'
+  */
+
+  def step(num: Int): Unit = {
+    for(i <- 1 to num) {
+      val stair = ("#" * i) + (" " * (num - i))
+      println(stair)
+    }
+  }
+
+  /*
+  Write a function that accepts a positive number N.
+
+  The function should console log a pyramid shape with N levels using the # character.  Make sure the pyramid has spaces on both the left *and* right hand sides.
+
+  Examples
+
+  pyramid(1);
+  //      '#'
+
+  pyramid(2);
+  //      ' # '
+  //      '###'
+
+  pyramid(3);
+  //      '  #  '
+  //      ' ### '
+  //      '#####'
+  */
+
+  def pyramid(n: Int): Unit = {
+    val numOfCol = (2 * n) - 1
+    for(i <- n to 1 by -1) {
+      val numOfSpace = i - 1
+      val numOfPound = numOfCol - (numOfSpace * 2)
+      val step = (" " * numOfSpace) ++ ("#" * numOfPound) ++ (" " * numOfSpace)
+      println(step)
+    }
+  }
 }
