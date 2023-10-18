@@ -288,4 +288,71 @@ object SolutionList {
       println(step)
     }
   }
+
+  /*
+  Write a function that returns the number of vowels used in a string.
+
+  Vowels are the characters a, e, i, o, and u
+
+  Examples
+
+  vowels('Hi There!'); --> 3
+  vowels('Why do you ask?'); --> 4
+  vowels('Why?'); --> 0*/
+  //Use regex, remove all char that isn't vowel
+  def vowels(input: String): Int = {
+    val pattern = "[^ueoaiUEOAI]+".r
+    pattern.replaceAllIn(input, "").length
+  }
+
+  //Alternative solution: Iterate through the input to see if a char is a vowel
+//  def vowels(input: String): Int = {
+//    val checker = List('a', 'e', 'u', 'o', 'i')
+//    input.toLowerCase.foldLeft(0)((count, char) => {
+//      if(checker.contains(char)) count + 1
+//      else count
+//    })
+//  }
+
+  /*
+ Write a function that accepts an integer N and returns a NxN spiral matrix.
+
+ Examples:
+
+ matrix(2);
+ //     [[undefined, undefined],
+ //      [undefined, undefined]]
+
+ matrix(3);
+ //     [[1, 2, 3],
+ //      [8, 9, 4],
+ //      [7, 6, 5]]
+
+ matrix(4);
+ //     [[1,   2,  3, 4],
+ //      [12, 13, 14, 5],
+ //      [11, 16, 15, 6],
+ //      [10,  9,  8, 7]]
+ */
+  def matrix(n: Int): Array[Array[Int]] = {
+    val matrix = Array.ofDim[Int](n, n)
+    val direction = Array((0, 1), (1, 0), (0, -1), (-1, 0))
+    var directionIdx = 0
+    var x, y = 0
+
+    for(i <- 1 to n*n) {
+      matrix(x)(y) = i
+      val newX = x + direction(directionIdx)._1
+      val newY = y + direction(directionIdx)._2
+
+      if(newX < 0 || newX >= n || newY < 0 || newY >= n || matrix(newX)(newY) != 0) {
+        directionIdx = (directionIdx + 1) % 4
+      }
+
+      x += direction(directionIdx)._1
+      y += direction(directionIdx)._2
+    }
+
+    matrix
+  }
 }

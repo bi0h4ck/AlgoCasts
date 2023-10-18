@@ -152,4 +152,38 @@ object QuestionList {
 
   def pyramid(n: Int): Unit = ???
 
+  /*
+  Write a function that returns the number of vowels used in a string.
+
+  Vowels are the characters a, e, i, o, and u
+
+  Examples
+
+  vowels('Hi There!'); --> 3
+  vowels('Why do you ask?'); --> 4
+  vowels('Why?'); --> 0*/
+  def vowels(input: String): Int = ???
+
+ /*
+ Write a function that accepts an integer N and returns a NxN spiral matrix.
+
+ Examples:
+
+ matrix(2);
+ //     [[undefined, undefined],
+ //      [undefined, undefined]]
+
+ matrix(3);
+ //     [[1, 2, 3],
+ //      [8, 9, 4],
+ //      [7, 6, 5]]
+
+ matrix(4);
+ //     [[1,   2,  3, 4],
+ //      [12, 13, 14, 5],
+ //      [11, 16, 15, 6],
+ //      [10,  9,  8, 7]]
+ */
+  def matrix(n: Int): Array[Array[Int]] = ???
+
 }
